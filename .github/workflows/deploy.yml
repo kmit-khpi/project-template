@@ -32,7 +32,9 @@ jobs:
         run: |
           if [ -f package.json ]; then
             echo "Знайдено package.json — збираю застосунок через Vite"
-            npm install --no-audit --no-fund
+            # --legacy-peer-deps: експорти з AI Studio містять застарілу версію esbuild,
+            # яка конфліктує з Vite 8; без цього прапорця npm install завершується помилкою.
+            npm install --no-audit --no-fund --legacy-peer-deps
             npx vite build --base "/${{ github.event.repository.name }}/" --outDir _site
           else
             echo "package.json немає — публікую файли як є"
